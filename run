@@ -1,0 +1,3 @@
+pip install -U pip setuptools wheel
+pip install -r reqs.txt
+python3 bot.py

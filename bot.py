@@ -85,7 +85,7 @@ async def get_notes(device):
     return json_
 
 
-@bot.on_message(filters.command(commands="post", prefixes="/") & (filters.chat(CHATS) | filter.user(USER)))
+@bot.on_message(filters.command(commands="post", prefixes="/") & (filters.chat(CHATS) | filters.user(USER)))
 async def post_msg(bot, message):
     if not (reply := message.reply_to_message):
         return await message.reply("Reply to a message to post in channel")

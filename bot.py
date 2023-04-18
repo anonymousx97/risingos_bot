@@ -20,14 +20,16 @@ bot = Client(
     in_memory=True,
     parse_mode=ParseMode.DEFAULT,
 )
-USER = json.loads(os.environ.get("USER"))
+
+CHATS = json.loads(os.environ.get("CHATS"))
 BANNER_PATH = os.environ.get("BANNER_PATH")
 DEVICE_CHANGELOG = os.environ.get("DEVICE_CHANGELOG")
 DEVICE_JSON = os.environ.get("DEVICE_JSON")
+RELEASE_CHANNEL = os.environ.get("RELEASE_CHANNEL")
 SOURCE_CHANGELOG = os.environ.get("SOURCE_CHANGELOG")
+USER = json.loads(os.environ.get("USERS"))
 
-
-@bot.on_message(filters.command(commands="cpost", prefixes="/") & filters.user(USER))
+@bot.on_message(filters.command(commands="cpost", prefixes="/") & filters.chat(CHATS))
 async def make_post(bot, message):
     codename = message.text.replace("/cpost", "").strip()
     if not codename:
@@ -81,6 +83,14 @@ async def get_notes(device):
     if not isinstance(json_, dict):
         return {}
     return json_
+
+
+@bot.on_message(filters.command(commands="post", prefixes="/") & filters.chat(CHATS))
+async def post_msg(bot, message):
+    if not (reply := message.reply_to_message):
+        return await message.reply("Reply to a message to post in channel")
+    await reply.copy(RELEASE_CHANNEL)
+    await message.reply("Posted")
 
 
 @bot.on_message(filters.command(commands="restart", prefixes="/") & filters.user(USER))

@@ -29,9 +29,9 @@ RELEASE_CHANNEL = os.environ.get("RELEASE_CHANNEL")
 SOURCE_CHANGELOG = os.environ.get("SOURCE_CHANGELOG")
 USER = json.loads(os.environ.get("USERS"))
 
-@bot.on_message(filters.command(commands="cpost", prefixes="/") & filters.chat(CHATS))
+@bot.on_message(filters.command(commands="cpost", prefixes="/") & (filters.chat(CHATS) | filters.user(USER)))
 async def make_post(bot, message):
-    codename = message.text.replace("/cpost", "").strip()
+    codename = message.text.replace("/cpost", "").lower().strip()
     if not codename:
         return await message.reply("Give Codename")
     data = await get_json(DEVICE_JSON + codename + ".json")
@@ -73,7 +73,7 @@ async def get_json(url):
             response = await session.text()
             response = json.loads(response)
         except Exception:
-            response = "Not found"
+            response = "Json Not found or is Empty."
     return response
 
 
@@ -85,7 +85,7 @@ async def get_notes(device):
     return json_
 
 
-@bot.on_message(filters.command(commands="post", prefixes="/") & filters.chat(CHATS))
+@bot.on_message(filters.command(commands="post", prefixes="/") & (filters.chat(CHATS) | filter.user(USER)))
 async def post_msg(bot, message):
     if not (reply := message.reply_to_message):
         return await message.reply("Reply to a message to post in channel")

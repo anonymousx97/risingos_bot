@@ -8,6 +8,8 @@ import aiohttp
 from dotenv import load_dotenv
 from pyrogram import Client, filters, idle
 from pyrogram.enums import ParseMode
+from pyrogram.errors import MediaEmpty, WebpageCurlFailed
+from wget import download
 
 if os.path.isfile("config.env"):
     load_dotenv("config.env")
@@ -63,8 +65,15 @@ risingOS v{version} | Official | Android 13
         message_ += f"<b>Notes:</b>\n  {note}\n\n"
 
     message_ += "<b>Credits:</b>\n  - @not_ayan99 for banner"
-
-    await message.reply_photo(BANNER_PATH + codename + ".png", caption=message_)
+    if len(message_) > 1024:
+        return await message.reply("Caption of post went over the TG limit of __1024__ characters.")
+    try:
+        await message.reply_photo(BANNER_PATH + codename + ".png", caption=message_)
+    except (MediaEmpty, WebpageCurlFailed):
+        img = download(BANNER_PATH + codename + ".png")
+        await message.reply_photo(img, caption=message_)
+        if os.path.isfile(img):
+            os.remove(img)
 
 
 async def get_json(url):

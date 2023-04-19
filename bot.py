@@ -31,7 +31,7 @@ USER = json.loads(os.environ.get("USERS"))
 
 @bot.on_message(filters.command(commands="cpost", prefixes="/") & (filters.chat(CHATS) | filters.user(USER)))
 async def make_post(bot, message):
-    codename = message.text.replace("/cpost", "").lower().strip()
+    codename = message.text.replace("/cpost", "").strip()
     if not codename:
         return await message.reply("Give Codename")
     data = await get_json(DEVICE_JSON + codename + ".json")

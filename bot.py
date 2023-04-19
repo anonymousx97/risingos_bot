@@ -60,7 +60,7 @@ risingOS v{version} | Official | Android 13
 ◾<b>Support group:</b> <a href=\"https://t.me/riceDroidsupport\">Source</a> | <a href=\"{support_group}\">Device</a>\n\n"""
 
     if note := "\n  ".join(notes.get("notes", [])):
-        message_ += f"<b>Notes:</b>\n{note}\n\n"
+        message_ += f"<b>Notes:</b>\n  {note}\n\n"
 
     message_ += "<b>Credits:</b>\n  - @not_ayan99 for banner"
 

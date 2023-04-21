@@ -2,4 +2,5 @@ aiohttp
 Pyrogram==2.0.57
 python-dotenv==0.21.0
 TgCrypto==1.2.3
+telegraph-api
 wget>=3.2

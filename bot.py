@@ -78,7 +78,7 @@ risingOS v{json_.get("version")} | Official | Android 13
 
     if note := "\n  ".join(notes.get("notes", [])):
         if len(note + message_ + credits) > 1024:
-            rom_notes = f" **[Here]({await post_to_telegraph('  '+note)})"
+            rom_notes = f" **[Here]({await post_to_telegraph('  '+note)})**"
         else:
             rom_notes = "\n  " + note
         message_ += f"\n\n<b>Notes:</b>{rom_notes}"
